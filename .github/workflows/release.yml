@@ -33,15 +33,24 @@ jobs:
 
       - name: Manual Sign APK
         run: |
+          set -e
           if [ -z "${{ secrets.SIGNING_KEY }}" ]; then 
-            echo "Error: SIGNING_KEY is empty! Please check your Repository Secrets."
+            echo "Error: SIGNING_KEY is empty!"
             exit 1
           fi
           
-          echo "${{ secrets.SIGNING_KEY }}" | base64 -d > release.jks
+          # 使用 EOF 方式解码，处理长字符串和换行符更稳定
+          cat << 'EOF' | base64 -d > release.jks
+          ${{ secrets.SIGNING_KEY }}
+          EOF
+          
+          if [ ! -s release.jks ]; then
+            echo "Error: Decoded JKS file is empty!"
+            exit 1
+          fi
           
           echo "--- KeyStore Diagnostic ---"
-          keytool -list -keystore release.jks -storepass "${{ secrets.KEY_STORE_PASSWORD }}" || echo "KeyStore Password might be wrong!"
+          keytool -list -keystore release.jks -storepass "${{ secrets.KEY_STORE_PASSWORD }}"
           
           BUILD_TOOLS_PATH=$(ls -d /usr/local/lib/android/sdk/build-tools/* | tail -1)
           RAW_APK=$(ls app/build/outputs/apk/release/*.apk | head -1)
