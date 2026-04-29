@@ -33,7 +33,10 @@ jobs:
 
       - name: Manual Sign APK
         run: |
-          if [ -z "${{ secrets.SIGNING_KEY }}" ]; then echo "Error: SIGNING_KEY is empty"; exit 1; fi
+          if [ -z "${{ secrets.SIGNING_KEY }}" ]; then 
+            echo "Error: SIGNING_KEY is empty! Please check your Repository Secrets."
+            exit 1
+          fi
           
           echo "${{ secrets.SIGNING_KEY }}" | base64 -d > release.jks
           
@@ -59,6 +62,8 @@ jobs:
           ls -lh app-release-signed.apk
 
       - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if gh release view ${{ github.ref_name }} > /dev/null 2>&1; then
             gh release upload ${{ github.ref_name }} app-release-signed.apk --clobber
@@ -67,10 +72,10 @@ jobs:
               --title "Release ${{ github.ref_name }}" \
               --notes "自动构建并签名的正式版本。"
           fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to Release Branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -80,16 +85,12 @@ jobs:
           cd deploy_dir
           
           git init
-          git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git"
           
           git checkout -b release-bin
           git add unzip-pro-latest.apk
           git commit -m "release: update signed apk to ${GITHUB_REF_NAME}"
-          
-          # 使用 --force 强制推送到 release-bin 分支
           git push origin release-bin --force
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Dispatch to Blog Repo
         run: |
