@@ -1,0 +1,32 @@
+pluginManagement {
+    repositories {
+        mavenLocal()
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven {
+            url 'http://localhost:8081/repository/maven-group/'
+            allowInsecureProtocol = true
+        }
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        mavenLocal()
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://download.sdk.umeng.com/maven' }
+        maven {
+            url 'http://localhost:8081/repository/maven-group/'
+            allowInsecureProtocol = true
+        }
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "UnzipFile"
+include ':app'

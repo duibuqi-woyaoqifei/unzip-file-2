@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F2F7">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_back"
+            app:title="奖励中心"
+            app:titleCentered="true"
+            app:titleTextColor="#1C1C1E" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- 重构后的高端会员卡片 (尊贵版) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="12dp"
+                app:strokeWidth="0dp">
+
+                <RelativeLayout
+                    android:id="@+id/rlPromoMemberCardContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_vip_noble"
+                    android:padding="20dp">
+
+                    <!-- 背景点缀：小皇冠水印 -->
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="-10dp"
+                        android:alpha="0.1"
+                        android:rotation="10"
+                        android:src="@drawable/ic_crown"
+                        app:tint="@android:color/white" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:src="@drawable/ic_crown"
+                                    app:tint="#D4AF37" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="4dp"
+                                    android:text="MEMBERSHIP STATUS"
+                                    android:textColor="#B3C5A059"
+                                    android:textSize="10sp"
+                                    android:letterSpacing="0.1" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tvViewStats"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/bg_white_alpha_20"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="4dp"
+                                android:text="累计收益 ›"
+                                android:textColor="@android:color/white"
+                                android:textSize="11sp" />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/tvVipStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="尊享会员版"
+                            android:textColor="@android:color/white"
+                            android:textSize="22sp"
+                            android:fontFamily="sans-serif-black" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:layout_marginVertical="16dp"
+                            android:background="#33FFFFFF" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="已获会员总额"
+                                    android:textColor="#B3FFFFFF"
+                                    android:textSize="11sp" />
+                                <TextView
+                                    android:id="@+id/tvTotalVipEarned"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0.0 天"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="16sp"
+                                    android:fontFamily="sans-serif-medium" />
+                            </LinearLayout>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnRedeemGift"
+                                style="@style/Widget.MaterialComponents.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:layout_marginEnd="8dp"
+                                android:paddingHorizontal="12dp"
+                                android:text="礼包兑换"
+                                android:textColor="@android:color/white"
+                                android:textSize="12sp"
+                                app:backgroundTint="#26FFFFFF"
+                                app:cornerRadius="18dp"
+                                app:strokeColor="#4DFFFFFF"
+                                app:strokeWidth="1dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnEarnMore"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:paddingHorizontal="12dp"
+                                android:text="推荐好友"
+                                android:textColor="#1A1A1A"
+                                android:textSize="12sp"
+                                app:backgroundTint="#D4AF37"
+                                app:cornerRadius="18dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 看视频任务 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:text="免费领会员"
+                android:textColor="#1C1C1E"
+                android:textSize="17sp"
+                android:fontFamily="sans-serif-black" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvAdTasks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_ad_task" />
+
+            <!-- 限时优惠商品 -->
+            <LinearLayout
+                android:id="@+id/layoutPromos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="限时特惠"
+                    android:textColor="#1C1C1E"
+                    android:textSize="17sp"
+                    android:fontFamily="sans-serif-black" />
+                
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:text="购买下方商品，自动获赠会员天数"
+                    android:textColor="#8E8E93"
+                    android:textSize="12sp" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="150dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvProducts"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:visibility="gone"
+                        tools:listitem="@layout/item_affiliate_product" />
+
+                    <ProgressBar
+                        android:id="@+id/pbLoading"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center"
+                        android:indeterminateTint="#007AFF" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutEmptyState"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+                        <TextView
+                            android:id="@+id/tvEmptyMessage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="暂无内容"
+                            android:textColor="#8E8E93"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </FrameLayout>
+            </LinearLayout>
+
+            <!-- 规则说明 -->
+            <LinearLayout
+                android:id="@+id/layoutRulesTrigger"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="40dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="奖励发放及使用规则说明"
+                    android:textColor="#007AFF"
+                    android:textSize="13sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="›"
+                    android:textColor="#007AFF"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

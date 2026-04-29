@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">解压专家</string>
+    <string name="select_file">选择压缩包</string>
+    <string name="select_dest">选择解压目录</string>
+    <string name="start_unzip">开始解压</string>
+    <string name="unzipping">正在解压...</string>
+    <string name="completed">解压完成</string>
+    <string name="failed">解压失败</string>
+    <string name="config_extraction">配置提取</string>
+    <string name="no_source_selected">未选择源文件</string>
+    <string name="no_target_selected">未选择保存目录</string>
+    <string name="preparing_engine">正在初始化引擎...</string>
+    <string name="select_hint">请先选择源文件和目标目录</string>
+    <string name="initializing">初始化中...</string>
+    <string name="preparing">准备中...</string>
+    <string name="extracting_archive">正在解压文件</string>
+    <string name="unzip_service_channel">解压服务通知通道</string>
+    <string name="error_opening_source">无法打开源文件</string>
+    <string name="extraction_successful">解压成功</string>
+    <string name="extraction_failed">解压失败</string>
+    
+    <!-- Compression related -->
+    <string name="compressing_files">正在压缩文件</string>
+    <string name="compression_service_channel">压缩服务通知通道</string>
+    <string name="compression_successful">压缩成功</string>
+    <string name="compression_failed">压缩失败</string>
+    <string name="select_files_to_compress">选择要压缩的文件</string>
+    <string name="start_compression">开始压缩</string>
+    
+    <!-- Membership related -->
+    <string name="membership_free">免费版</string>
+    <string name="membership_premium">会员版</string>
+    <string name="permission_denied">权限不足</string>
+    <string name="upgrade_to_premium">升级为会员</string>
+    <string name="membership_status">会员状态</string>
+    <string name="current_tier">当前等级: %s</string>
+    <string name="permission_description">权限说明: %s</string>
+    <string name="upgrade_hint">升级会员解锁全部功能</string>
+    <string name="feature_not_available">此功能暂未开放</string>
+    
+    <!-- Operation mode -->
+    <string name="mode_extract">解压模式</string>
+    <string name="mode_compress">压缩模式</string>
+    <string name="operation_mode">操作模式</string>
+    
+    <!-- Multi-file selection -->
+    <string name="files_selected">已选择 %d 个文件</string>
+    <string name="no_files_selected">未选择文件</string>
+    <string name="select_multiple_files">选择多个文件</string>
+    <string name="batch_operation_premium_only">批量操作仅限会员使用</string>
+    <string name="confirm">确定</string>
+    <string name="empty_directory">此目录为空</string>
+    <string name="root_path">根目录</string>
+</resources>
+
+

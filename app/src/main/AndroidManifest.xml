@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" xmlns:tools="http://schemas.android.com/tools" />
+    
+    <!-- 广告 ID 权限 (Android 13+ 必选) -->
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+    <!-- 允许安装未知来源应用 (部分下载类广告需要) -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <!-- 声明我们要查询和跳转的外部 App（Android 11+ 包可见性要求） -->
+    <queries>
+        <package android:name="com.taobao.taobao" /> <!-- 淘宝 -->
+        <package android:name="com.tencent.mm" />    <!-- 微信 -->
+    </queries>
+
+    <application
+        android:name=".UnzipApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+
+        android:theme="@style/Theme.UnzipFile"
+        android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true">
+        
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.App.Starting">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.UnzipFile.NoActionBar">
+            <intent-filter android:label="加入解压大师">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="unzipfile" android:host="invite" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".InvitationActivity"
+            android:exported="true"
+            android:theme="@style/Theme.UnzipFile"
+            android:screenOrientation="portrait">
+        </activity>
+        
+        <activity
+            android:name=".picker.FilePickerActivity"
+            android:theme="@style/Theme.UnzipFile.NoActionBar"
+            android:label="@string/select_file" />
+
+        <activity
+            android:name=".PromotionActivity"
+            android:theme="@style/Theme.UnzipFile.NoActionBar"
+            android:screenOrientation="portrait"
+            android:label="推广中心" />
+
+        <activity
+            android:name=".membership.RewardStatsActivity"
+            android:theme="@style/Theme.UnzipFile.NoActionBar"
+            android:screenOrientation="portrait"
+            android:label="收益统计" />
+
+        <service
+            android:name=".UnzipService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false" />
+
+        <service
+            android:name=".CompressionService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+    </application>
+
+
+
+</manifest>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@android:color/white">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="用户协议与隐私政策"
+        android:textColor="#1D1D1F"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="260dp">
+        
+        <TextView
+            android:id="@+id/tvPrivacyContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="【安全承诺】解压大师采用完全本地化的处理技术，您的所有文件（如压缩包、文档、照片等）均在手机本地进行解压和压缩，绝不会上传至任何服务器，我们承诺不收集、不访问您的任何文件内容。\n\n为了保障服务的正常运行及合规要求，主要条款说明如下：\n\n1. 【存储权限】仅用于读取您选中的文件并保存解压结果，不涉及其他无关数据的访问。\n\n2. 【设备标识】为了识别会员状态、发放邀请奖励及展示激励广告，我们会收集您的设备标识符（Android ID、OAID、设备型号等）用于生成唯一指纹，不涉及个人身份识别。\n\n3. 【友盟+ SDK】本产品集成【友盟+】SDK以提供统计分析及激励视频广告服务。友盟SDK将收集您的设备信息（Android ID/OAID/IDFA等）、网络信息，详细处理方式请参阅《友盟+隐私权政策》（https://www.umeng.com/page/policy）。\n\n【核心声明】我们深知隐私的重要性，除上述必要的业务统计和合规采集外，我们不会将您的数据泄露给第三方。再次重申，您的文件内容始终留在您的设备中，您可以放心使用我们的全功能解压服务。"
+            android:textColor="#3A3A3C"
+            android:textSize="14sp"
+            android:lineSpacingExtra="4dp" />
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAgree"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:text="同意并继续"
+            android:textAllCaps="false"
+            app:cornerRadius="12dp"
+            xmlns:app="http://schemas.android.com/apk/res-auto" />
+
+        <TextView
+            android:id="@+id/btnDisagree"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="不同意并退出"
+            android:textColor="#8E8E93"
+            android:gravity="center"
+            android:textSize="14sp" />
+    </LinearLayout>
+</LinearLayout>

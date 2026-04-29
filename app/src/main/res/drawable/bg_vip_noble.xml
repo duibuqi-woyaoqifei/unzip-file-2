@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Base Background with deep charcoal gradient -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="135"
+                android:startColor="#1F1F1F"
+                android:centerColor="#2D2D2D"
+                android:endColor="#121212"
+                android:type="linear" />
+            <corners android:radius="20dp" />
+        </shape>
+    </item>
+
+    <!-- Subtle Gold Border -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="20dp" />
+            <stroke
+                android:width="1.5dp"
+                android:color="#C5A059" /> <!-- Champagne Gold -->
+        </shape>
+    </item>
+
+    <!-- Glossy Overlay (Upper-left highlight) -->
+    <item android:bottom="80dp" android:right="120dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="135"
+                android:startColor="#1AFFFFFF"
+                android:endColor="#00FFFFFF" />
+            <corners android:topLeftRadius="20dp" />
+        </shape>
+    </item>
+</layer-list>

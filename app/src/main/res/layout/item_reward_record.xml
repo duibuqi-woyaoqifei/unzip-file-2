@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:strokeColor="#F2F2F7"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/ivRewardType"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_icon_circle"
+            android:padding="10dp"
+            android:src="@drawable/ic_membership"
+            app:tint="?attr/colorPrimary" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvRewardDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="邀请好友奖励"
+                android:textColor="#1D1D1F"
+                android:textSize="15sp"
+                android:fontFamily="sans-serif-medium" />
+
+            <TextView
+                android:id="@+id/tvRewardTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2024-04-24 19:45"
+                android:textColor="#8E8E93"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvRewardDays"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+3 天"
+            android:textColor="#34C759"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-black" />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

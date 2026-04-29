@@ -1,0 +1,25 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.UnzipFile" parent="Theme.Material3.DayNight">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+    </style>
+
+    <style name="Theme.UnzipFile.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- Splash Screen Theme -->
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <!-- 背景颜色：深邃午夜蓝，突显图标质感 -->
+        <item name="windowSplashScreenBackground">#faf8ff</item>
+        <!-- 中间的图标 (已更新为您提供的 SVG) -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_animation</item>
+
+
+        <!-- 启动完成后的主题 -->
+        <item name="postSplashScreenTheme">@style/Theme.UnzipFile.NoActionBar</item>
+    </style>
+</resources>
+

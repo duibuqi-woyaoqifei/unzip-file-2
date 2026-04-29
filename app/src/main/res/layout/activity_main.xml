@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F2F7">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/app_name"
+            app:titleCentered="true"
+            app:titleTextColor="#1C1C1E">
+
+            <ImageButton
+                android:id="@+id/btnNavRewards"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_gift"
+                app:tint="#007AFF" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:clipToPadding="false">
+
+            <!-- 重构后的高端会员卡片 (尊贵版) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardMembership"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="12dp"
+                app:strokeWidth="0dp">
+
+                <RelativeLayout
+                    android:id="@+id/rlMemberCardContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_vip_noble"
+                    android:padding="24dp">
+
+                    <!-- 背景点缀：大皇冠水印 -->
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="-20dp"
+                        android:alpha="0.1"
+                        android:rotation="15"
+                        android:src="@drawable/ic_crown"
+                        app:tint="@android:color/white" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/ivMemberIcon"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/ic_crown"
+                                app:tint="#D4AF37" />
+
+                            <TextView
+                                android:id="@+id/tvMemberLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:fontFamily="sans-serif-medium"
+                                android:letterSpacing="0.1"
+                                android:text="SUPREME PRIVILEGE"
+                                android:textColor="#B3C5A059"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tvMembershipStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="sans-serif-black"
+                            android:text="尊享会员版"
+                            android:textColor="@android:color/white"
+                            android:textSize="26sp" />
+
+                        <TextView
+                            android:id="@+id/tvPermissionDesc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="已解锁全格式支持 · 极速任务引擎"
+                            android:textColor="#CCFFFFFF"
+                            android:textSize="13sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnUpgrade"
+                            android:layout_width="wrap_content"
+                            android:layout_height="38dp"
+                            android:layout_marginTop="20dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:paddingHorizontal="20dp"
+                            android:text="领取专属权益"
+                            android:textColor="#1A1A1A"
+                            android:textSize="12sp"
+                            app:backgroundTint="#D4AF37"
+                            app:cornerRadius="19dp" />
+
+                    </LinearLayout>
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 模式切换 -->
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/toggleGroupMode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:checkedButton="@+id/btnModeExtract"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnModeExtract"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="解压文件" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnModeCompress"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="压缩文件" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            <!-- 操作卡片 -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#E5E5EA"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/tvConfigTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="选择源文件"
+                        android:textColor="#007AFF"
+                        android:textSize="15sp"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSelectFile"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="16dp"
+                        android:text="点击选择文件"
+                        app:cornerRadius="14dp"
+                        app:icon="@android:drawable/ic_input_add" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvSelectedFiles"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:maxHeight="160dp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tvFilePath"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="未选择任何文件"
+                        android:textAlignment="center"
+                        android:textColor="#8E8E93"
+                        android:textSize="12sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="16dp"
+                        android:background="#E5E5EA" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSelectDest"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="选择保存目录"
+                        app:cornerRadius="14dp"
+                        app:icon="@android:drawable/ic_menu_save" />
+
+                    <TextView
+                        android:id="@+id/tvDestPath"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="未选择保存目录"
+                        android:textAlignment="center"
+                        android:textColor="#8E8E93"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 高级选项 -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardAdvancedOptions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="100dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#E5E5EA"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="高级选项"
+                        android:textColor="#1C1C1E"
+                        android:textSize="15sp"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilPassword"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:hint="解压/压缩密码 (选填)"
+                        app:endIconMode="password_toggle">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llCompressionSettings"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="12dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="压缩强度"
+                            android:textSize="13sp" />
+                        <com.google.android.material.slider.Slider
+                            android:id="@+id/sliderCompressionLevel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:valueFrom="0.0"
+                            android:valueTo="9.0"
+                            android:stepSize="1.0"
+                            android:value="5.0" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnStart"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:layout_margin="24dp"
+        android:text="立即开始"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif-black"
+        app:cornerRadius="16dp"
+        app:elevation="8dp" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

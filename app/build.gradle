@@ -1,0 +1,109 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.example.unzipfile'
+    compileSdk 34
+    ndkVersion "26.3.11579264" // 改为 r26d 版本
+
+
+    defaultConfig {
+        applicationId "com.lior.unzipfile"
+        minSdk 24
+        targetSdk 34
+        versionCode 7
+        versionName "1.0.6"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++17"
+            }
+        }
+        ndk {
+            abiFilters 'arm64-v8a', 'armeabi-v7a'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    externalNativeBuild {
+        cmake {
+            path file('src/main/cpp/CMakeLists.txt')
+        }
+    }
+
+
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    // 自定义 APK 输出文件名
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            // 获取版本名
+            def versionName = variant.versionName
+            // 设置新的文件名：unzip-pro-v1.0.0-release.apk
+            outputFileName = "unzip-pro-v${versionName}-${variant.buildType.name}.apk"
+        }
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
+    implementation 'androidx.documentfile:documentfile:1.0.1'
+    implementation 'androidx.security:security-crypto:1.1.0-alpha06'
+
+    // Utilities
+    implementation 'io.coil-kt:coil:2.5.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'androidx.core:core-splashscreen:1.0.1'
+    
+    // Network
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.11.0'
+
+    // Advanced Archiving (RAR5, 7z & Password Support)
+    implementation 'com.github.junrar:junrar:7.5.5'
+    implementation 'org.apache.commons:commons-compress:1.24.0'
+    implementation 'org.tukaani:xz:1.9'
+    implementation 'net.lingala.zip4j:zip4j:2.11.5'
+
+    // Umeng SDK
+    implementation 'com.umeng.umsdk:common:9.6.3'
+    implementation 'com.umeng.umsdk:asms:1.8.0'
+    implementation 'com.umeng.umsdk:apm:1.9.1'
+    implementation 'com.umeng.umsdk:uyumao:1.1.2' // 反作弊高级版
+    implementation 'com.umeng.umsdk:union:3.2.0'  // 智能营销/变现
+    implementation 'com.umeng.umsdk:nns:1.1.0'    // 合规助手 (必选)
+    
+    // U-Link (智能超链 - 用于自动识别分享安装)
+    implementation 'com.umeng.umsdk:link:1.2.0'
+}
