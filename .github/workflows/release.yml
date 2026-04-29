@@ -37,7 +37,6 @@ jobs:
           
           echo "${{ secrets.SIGNING_KEY }}" | base64 -d > release.jks
           
-          # 诊断步骤：检查 KeyStore 内容
           echo "--- KeyStore Diagnostic ---"
           keytool -list -keystore release.jks -storepass "${{ secrets.KEY_STORE_PASSWORD }}" || echo "KeyStore Password might be wrong!"
           
@@ -76,15 +75,21 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          mkdir -p publish
-          cp app-release-signed.apk publish/unzip-pro-latest.apk
+          mkdir -p deploy_dir
+          cp app-release-signed.apk deploy_dir/unzip-pro-latest.apk
+          cd deploy_dir
           
-          cd publish
           git init
+          git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          
           git checkout -b release-bin
-          git add .
+          git add unzip-pro-latest.apk
           git commit -m "release: update signed apk to ${GITHUB_REF_NAME}"
-          git push -f https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} release-bin
+          
+          # 使用 --force 强制推送到 release-bin 分支
+          git push origin release-bin --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Dispatch to Blog Repo
         run: |
