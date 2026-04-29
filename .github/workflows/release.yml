@@ -8,6 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,12 +39,12 @@ jobs:
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
+          buildToolsVersion: "34.0.0"
 
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          # 使用签名后的 APK
           files: ${{ steps.sign_app.outputs.signedReleaseFile }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -52,7 +55,6 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
           mkdir -p publish
-          # 拷贝签名后的正式包
           cp ${{ steps.sign_app.outputs.signedReleaseFile }} publish/unzip-pro-latest.apk
           
           cd publish
