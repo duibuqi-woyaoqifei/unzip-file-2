@@ -8,9 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
     steps:
       - uses: actions/checkout@v4
         with:
@@ -29,23 +26,40 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew assembleRelease
 
-      # [核心步骤]：自动签名 APK
-      - name: Sign APK
-        uses: r0adkll/sign-android-release@v1
-        id: sign_app
-        with:
-          releaseDirectory: app/build/outputs/apk/release
-          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-          alias: ${{ secrets.ALIAS }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
-          buildToolsVersion: "34.0.0"
+      # [核心修复]：使用原生命令行工具进行手动签名，避开不稳定的第三方 Action
+      - name: Manual Sign APK
+        run: |
+          # 1. 恢复签名文件
+          echo "${{ secrets.SIGNING_KEY }}" | base64 -d > release.jks
+          
+          # 2. 定位最新的 build-tools 路径
+          BUILD_TOOLS_PATH=$(ls -d /usr/local/lib/android/sdk/build-tools/* | tail -1)
+          echo "Using Build Tools from: $BUILD_TOOLS_PATH"
+          
+          # 3. 寻找编译产物
+          RAW_APK=$(ls app/build/outputs/apk/release/*.apk | head -1)
+          
+          # 4. Zipalign 对齐
+          $BUILD_TOOLS_PATH/zipalign -v 4 "$RAW_APK" app-release-aligned.apk
+          
+          # 5. Apksigner 签名
+          $BUILD_TOOLS_PATH/apksigner sign --ks release.jks \
+            --ks-key-alias "${{ secrets.ALIAS }}" \
+            --ks-pass pass:"${{ secrets.KEY_STORE_PASSWORD }}" \
+            --key-pass pass:"${{ secrets.KEY_PASSWORD }}" \
+            --v2-signing-enabled true \
+            --v3-signing-enabled true \
+            --out app-release-signed.apk \
+            app-release-aligned.apk
+            
+          # 6. 验证签名
+          $BUILD_TOOLS_PATH/apksigner verify app-release-signed.apk
 
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          files: ${{ steps.sign_app.outputs.signedReleaseFile }}
+          files: app-release-signed.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -55,7 +69,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
           mkdir -p publish
-          cp ${{ steps.sign_app.outputs.signedReleaseFile }} publish/unzip-pro-latest.apk
+          cp app-release-signed.apk publish/unzip-pro-latest.apk
           
           cd publish
           git init
