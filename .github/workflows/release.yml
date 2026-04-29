@@ -36,12 +36,18 @@ jobs:
           if [ -z "${{ secrets.SIGNING_KEY }}" ]; then echo "Error: SIGNING_KEY is empty"; exit 1; fi
           
           echo "${{ secrets.SIGNING_KEY }}" | base64 -d > release.jks
-          BUILD_TOOLS_PATH=$(ls -d /usr/local/lib/android/sdk/build-tools/* | tail -1)
-          echo "Using Build Tools from: $BUILD_TOOLS_PATH"
-          RAW_APK=$(ls app/build/outputs/apk/release/*.apk | head -1)
-          echo "Found raw APK: $RAW_APK"
           
+          # 诊断步骤：检查 KeyStore 内容
+          echo "--- KeyStore Diagnostic ---"
+          keytool -list -keystore release.jks -storepass "${{ secrets.KEY_STORE_PASSWORD }}" || echo "KeyStore Password might be wrong!"
+          
+          BUILD_TOOLS_PATH=$(ls -d /usr/local/lib/android/sdk/build-tools/* | tail -1)
+          RAW_APK=$(ls app/build/outputs/apk/release/*.apk | head -1)
+          
+          echo "Target APK: $RAW_APK"
           $BUILD_TOOLS_PATH/zipalign -v 4 "$RAW_APK" app-release-aligned.apk
+          
+          echo "Starting apksigner..."
           $BUILD_TOOLS_PATH/apksigner sign --ks release.jks \
             --ks-key-alias "${{ secrets.ALIAS }}" \
             --ks-pass pass:"${{ secrets.KEY_STORE_PASSWORD }}" \
@@ -55,9 +61,7 @@ jobs:
 
       - name: Create GitHub Release
         run: |
-          # 检查 release 是否已存在
           if gh release view ${{ github.ref_name }} > /dev/null 2>&1; then
-            echo "Release already exists, uploading to existing release..."
             gh release upload ${{ github.ref_name }} app-release-signed.apk --clobber
           else
             gh release create ${{ github.ref_name }} app-release-signed.apk \
