@@ -33,24 +33,13 @@ jobs:
 
       - name: Manual Sign APK
         run: |
-          set -e
-          if [ -z "${{ secrets.SIGNING_KEY }}" ]; then 
-            echo "Error: SIGNING_KEY is empty!"
-            exit 1
-          fi
+          if [ -z "${{ secrets.SIGNING_KEY }}" ]; then echo "Error: SIGNING_KEY is empty"; exit 1; fi
           
-          # 使用 EOF 方式解码，处理长字符串和换行符更稳定
-          cat << 'EOF' | base64 -d > release.jks
-          ${{ secrets.SIGNING_KEY }}
-          EOF
-          
-          if [ ! -s release.jks ]; then
-            echo "Error: Decoded JKS file is empty!"
-            exit 1
-          fi
+          echo "${{ secrets.SIGNING_KEY }}" | base64 -d > release.jks
           
           echo "--- KeyStore Diagnostic ---"
-          keytool -list -keystore release.jks -storepass "${{ secrets.KEY_STORE_PASSWORD }}"
+          # 即使 keytool 失败也不中断，让我们能看到后面的报错
+          keytool -list -keystore release.jks -storepass "${{ secrets.KEY_STORE_PASSWORD }}" || echo "!!! WARNING: KEY_STORE_PASSWORD might be incorrect !!!"
           
           BUILD_TOOLS_PATH=$(ls -d /usr/local/lib/android/sdk/build-tools/* | tail -1)
           RAW_APK=$(ls app/build/outputs/apk/release/*.apk | head -1)
@@ -59,6 +48,7 @@ jobs:
           $BUILD_TOOLS_PATH/zipalign -v 4 "$RAW_APK" app-release-aligned.apk
           
           echo "Starting apksigner..."
+          # 如果 apksigner 失败，打印明确提示
           $BUILD_TOOLS_PATH/apksigner sign --ks release.jks \
             --ks-key-alias "${{ secrets.ALIAS }}" \
             --ks-pass pass:"${{ secrets.KEY_STORE_PASSWORD }}" \
@@ -66,13 +56,11 @@ jobs:
             --v2-signing-enabled true \
             --v3-signing-enabled true \
             --out app-release-signed.apk \
-            app-release-aligned.apk
+            app-release-aligned.apk || { echo "!!! APKSIGNER FAILED: Please check ALIAS and PASSWORDS !!!"; exit 1; }
           
           ls -lh app-release-signed.apk
 
       - name: Create GitHub Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if gh release view ${{ github.ref_name }} > /dev/null 2>&1; then
             gh release upload ${{ github.ref_name }} app-release-signed.apk --clobber
@@ -81,10 +69,10 @@ jobs:
               --title "Release ${{ github.ref_name }}" \
               --notes "自动构建并签名的正式版本。"
           fi
-
-      - name: Deploy to Release Branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy to Release Branch
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -94,12 +82,14 @@ jobs:
           cd deploy_dir
           
           git init
-          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git"
+          git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
           
           git checkout -b release-bin
           git add unzip-pro-latest.apk
           git commit -m "release: update signed apk to ${GITHUB_REF_NAME}"
           git push origin release-bin --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Dispatch to Blog Repo
         run: |
