@@ -148,35 +148,40 @@ class MainActivity : AppCompatActivity() {
     private fun openOutputDirectory() {
         destUri?.let { uri ->
             try {
-                val intent = Intent(Intent.ACTION_VIEW)
-                if (uri.scheme == "file") {
+                val targetUri = if (uri.scheme == "file") {
                     val file = File(uri.path ?: "")
+                    if (!file.exists()) {
+                        Toast.makeText(this, "目录不存在", Toast.LENGTH_SHORT).show()
+                        return
+                    }
                     val authority = "${packageName}.fileprovider"
-                    val contentUri = androidx.core.content.FileProvider.getUriForFile(this, authority, file)
-                    intent.setDataAndType(contentUri, "resource/folder")
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    androidx.core.content.FileProvider.getUriForFile(this, authority, file)
                 } else {
-                    // SAF Tree URI
-                    intent.setDataAndType(uri, "resource/folder")
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    uri
                 }
-                
+
                 // 尝试多种 MIME 类型以提高兼容性
-                val mimeTypes = arrayOf("resource/folder", "vnd.android.document/directory")
+                val mimeTypes = arrayOf("vnd.android.document/directory", "resource/folder", "inode/directory", "*/*")
                 var success = false
                 for (mime in mimeTypes) {
                     try {
-                        intent.type = mime
+                        val intent = Intent(Intent.ACTION_VIEW)
+                        intent.setDataAndType(targetUri, mime)
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         startActivity(intent)
                         success = true
                         break
-                    } catch (e: Exception) {}
+                    } catch (e: Exception) {
+                        // 继续尝试下一个
+                    }
                 }
                 
-                // 兜底方案：通用查看
-                val fallbackIntent = Intent(Intent.ACTION_VIEW, uri)
-                fallbackIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                startActivity(fallbackIntent)
+                if (!success) {
+                    // 兜底方案：不指定 MIME 类型
+                    val fallbackIntent = Intent(Intent.ACTION_VIEW, targetUri)
+                    fallbackIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    startActivity(fallbackIntent)
+                }
                 
             } catch (e: Exception) {
                 Toast.makeText(this, "无法打开目录: ${e.message}", Toast.LENGTH_SHORT).show()

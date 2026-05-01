@@ -28,6 +28,26 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      # [核心优化]：根据 Tag 自动同步修改代码里的版本号，彻底解决版本更新死循环问题
+      - name: Auto Update Version in build.gradle
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          # 将语义化版本号转换为整数 (例如 1.1.6 -> 10106)
+          # 逻辑: major*10000 + minor*100 + patch
+          if [[ $VERSION =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            MAJOR=${BASH_REMATCH[1]}
+            MINOR=${BASH_REMATCH[2]}
+            PATCH=${BASH_REMATCH[3]}
+            VERSION_CODE=$((MAJOR * 10000 + MINOR * 100 + PATCH))
+            
+            echo "Auto-syncing build.gradle -> VersionCode: $VERSION_CODE, VersionName: $VERSION"
+            
+            sed -i "s/versionCode [0-9]*/versionCode $VERSION_CODE/" app/build.gradle
+            sed -i "s/versionName \".*\"/versionName \"$VERSION\"/" app/build.gradle
+          else
+            echo "Warning: Tag $VERSION does not match x.y.z format, skipping auto-versioning."
+          fi
+
       - name: Build with Gradle
         run: ./gradlew assembleRelease
 
